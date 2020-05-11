@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<link rel="stylesheet" type="text/css" href="calc.css">
+		<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+	<title>Calculator</title>
+</head>
+<body>
+<div class="calculator">
+ <div class="screen"></div>
+	<div class="buttons">
+		
+		<button class="numbers" value="0">0</button>
+		<button class="numbers" value="1">1</button>
+		<button class="numbers" value="2">2</button>
+		<button class="numbers" value="3">3</button>
+		<button class="numbers" value="4">4</button>
+		<button class="numbers" value="5">5</button>
+		<button class="numbers" value="6">6</button>
+		<button class="numbers" value="7">7</button>
+		<button class="numbers" value="8">8</button>
+		<button class="numbers" value="9">9</button>
+		<button class="operators" value="+">+</button>
+		<button class="operators" value="-">-</button>
+		<button class="operators" value="x">x</button>
+		<button class="operators" value="/">/</button>
+		<button class="operators" value="=">=</button>
+		<button class="operators" value="C">C</button>
+		<button class="operators" value=".">.</button>
+
+	</div>
+
+</div>
+<script type="text/javascript">
+
+let input=document.querySelector('.screen');
+
+let n1,n2;
+let op_pressed;
+
+const buttons=document.querySelector('.buttons');
+
+buttons.addEventListener("click", function(event)
+{
+	if(n1!=undefined)
+	{
+		input.innerText="";
+	}
+	
+	if(event.target.className=="numbers")
+	{
+		input.innerText+=event.target.value;   // NA BALO PERIORISMO STO LENGTH
+
+	}else
+	{
+		op_pressed=event.target.value;
+		if(op_pressed==".")
+		{
+
+		}
+			n1=parseInt(input.innerText);
+	}
+	
+
+	
+});
+	
+let add=(a,b)=> a+b;
+let sub=(a,b)=> a-b;
+let mul=(a,b)=> a*b;
+let div=(a,b)=>a/b;
+
+function operator(a,b,op)
+{
+	if(op=="+")
+	{
+		add
+	}else if(op=="-")
+	{
+		sub
+	}else if(op=="x")
+	{
+		mul
+	}else
+	{
+		div
+	}
+}
+
+</script> 
+</body>
+</html>

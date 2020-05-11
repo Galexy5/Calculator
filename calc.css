@@ -1,0 +1,38 @@
+
+.calculator{
+  border-radius: 25px; /*Rounded corners*/
+  margin:0 auto;
+  background-color: #e0d9d7;
+  top:50%;
+  left:50%;
+  width: 500px;
+  height: 700px;
+  margin-top: 50px;
+
+}
+
+.screen{
+margin-top: 20px;
+margin-left: 50px;
+border-radius: 25px;
+position: relative;
+background-color: #f5f771;
+/*text-align: right;*/
+width:400px;
+height:60px;
+}
+
+
+
+.buttons button{
+	margin-top: 15px;
+	margin-left: 15px;
+	position: relative;
+	background-color: gray;
+	font-size: 40px;
+	color:black;
+	width:50px;
+	height:50px;
+	
+
+}
