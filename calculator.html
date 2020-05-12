@@ -27,9 +27,9 @@
 		<button class="numbers" value="0">0</button>
 		<button class="operators" value=".">.</button>
 		<button class="operators" value="+">+</button>
-		<button class="operators" value="=">=</button>
-		
+		<button class="operators" value="=">=</button>	
 		<button class="operators" value="C">C</button>
+		<button id="del" class="operators" class value="del">Del</button>
 
 	</div>
 
@@ -38,7 +38,10 @@
 
 let input=document.querySelector('.screen');
 
-let op_pressed;
+let eq_pressed=false;
+let dot_pressed=false;
+let del_pressed=false;
+let op_pressed=false;
 let screen=[]
 let number="";
 
@@ -50,14 +53,20 @@ buttons.addEventListener("click", function(event)
 	if(event.target.value!=undefined)
 	{
 
-		if(event.target.className=="numbers")
+		if(event.target.className=="numbers")  //Number is pressed
 	{
 
 
-		if(op_pressed=="=")
+		if(eq_pressed )						
 			{
 				input.innerText="";
-				op_pressed="";
+				number="";
+				eq_pressed=false;
+				if(!op_pressed)
+				{
+				screen=[];
+				}
+				
 			}
 
 		if(input.innerText=="0")
@@ -66,28 +75,68 @@ buttons.addEventListener("click", function(event)
 		}else{input.innerText+=event.target.value;}
 
 		number+=event.target.value;
-	}else
+		op_pressed=false;
+	}else //Operator or something else pressed
 	{
-			if(event.target.value!="="){input.innerText+=event.target.value;} // Display on calculator
+			if(event.target.value=="del" && !eq_pressed && number!="") //delete button
+				{
+					input.innerText=input.innerText.slice(0,-1);
+					number=number.slice(0,-1);
+				}else
+				{
 
-			if(number!="" && event.target.value!=".")
+			if(event.target.value!="=" && event.target.value!="del" && event.target.value!="C" && event.target.value!="." && !op_pressed)    //DISPLAY ON CALCULTOR AND ADD TO ARRAY NUMBER AND OPERATOR  + - * / 
 			{
-				screen.push(parseFloat(number));
-				number="";
-			}
-			
-			if(event.target.value==".")
+				op_pressed=true;
+				dot_pressed=false;
+				if(number!="")
+					{
+
+					if(eq_pressed)
+					{
+						 screen.push(event.target.value);
+						 number="";
+						 eq_pressed=false;
+					}else
+					{
+						screen.push(parseFloat(number));
+					 screen.push(event.target.value);
+					 input.innerText+=event.target.value;
+					 number="";
+					}
+
+				 
+					 }else
+					 {
+					 	screen.push(event.target.value);
+					 }
+
+			} 
+
+			if(event.target.value=="." && !dot_pressed)
 			{
-				number+=".";
-			}else{screen.push(event.target.value);}
+				number+="."
+				input.innerText+="."
+				dot_pressed=true;
+				eq_pressed=false;
+				op_pressed=false;
+				del_pressed=false;
+			} 
+
+
 			
 
-			if(event.target.value=="=")
+			if(event.target.value=="=" && !eq_pressed)
 			{
 				screen.push(parseFloat(number));
 				input.innerText=findResult(screen);
 				screen.splice(1);
-				op_pressed="="
+				number="";
+				eq_pressed=true;
+				dot_pressed=false;
+				op_pressed=false;
+				del_pressed=false;
+
 			}
 
 
@@ -96,7 +145,13 @@ buttons.addEventListener("click", function(event)
 				input.innerText="0"
 				number="";
 				screen=[];
+				eq_pressed=false;
+				dot_pressed=false;
+				op_pressed=false;
+				del_pressed=false
 			}
+				}
+
 	}
 	}
 
