@@ -41,7 +41,8 @@ let input=document.querySelector('.screen');
 let n1,n2;
 let next_n=false;
 let op_pressed;
-let tmp;
+let tmp_n;
+let tmp_o;
 
 const buttons=document.querySelector('.buttons');
 
@@ -80,21 +81,41 @@ buttons.addEventListener("click", function(event)
 			next_n=false;
 		}else if(event.target.value=="=" && n2!=undefined)
 		{
-				n2=parseFloat(input.innerText);
-				input.innerText=operator(n1,n2,op_pressed).toString();
-				n1=undefined;
-				n2=undefined;
-				next_n=false;
+			  if(tmp_o!=undefined && tmp_n!=undefined)
+					{
+						n2=operator(tmp_n,n2,op_pressed);
+						input.innerText=operator(n1,n2,tmp_o).toString();
+						tmp_o=undefined;
+						tmp_n=undefined;
+					}else
+					{
+						n2=parseFloat(input.innerText);
+						input.innerText=operator(n1,n2,op_pressed).toString();
+						n1=undefined;
+						n2=undefined;
+						next_n=false;
+					}
+				
 			  }else if(event.target.value==".")
 			    {
 				input.innerText+="."
 				}else
 				{
-					// if(event.target.value=="x" && n1!=undefined && n2!=undefined)
-					// {
-					// 	tmp=n1;
 
-					// }
+					if(op_pressed!=event.target.value)
+					{
+						tmp_o=op_pressed;
+					}
+					
+
+					if(tmp_o!=undefined && tmp_n!=undefined)
+					{
+						n2=operator(tmp_n,n2,op_pressed);
+						input.innerText=operator(n1,n2,tmp_o).toString();
+						n1=operator(n1,n2,tmp_o);
+						n2=0;
+					
+					}
 					
 					if(n2==undefined)
 					{
@@ -104,16 +125,18 @@ buttons.addEventListener("click", function(event)
 					}else
 					{
 						n2=parseFloat(input.innerText);
-						input.innerText=operator(n1,n2,op_pressed).toString();
-						n1=operator(n1,n2,op_pressed);
-						n2=0;
-						// if(op_pressed!="x" && op_pressed!="/" )
-						// {
+						//input.innerText=operator(n1,n2,op_pressed).toString();
+						
+						if(event.target.value!="x" && event.target.value!="/" )
+						{
+							input.innerText=operator(n1,n2,op_pressed).toString();
+							n1=operator(n1,n2,op_pressed);
+							n2=0;
+						}else
+						{
+							tmp_n=n2;
 							
-						// }else
-						// {
-
-						// }
+						}
 						op_pressed=event.target.value;
 					}
 					next_n=true;
