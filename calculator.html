@@ -50,8 +50,12 @@ buttons.addEventListener("click", function(event)
 {
 
 	
+
 	if(event.target.className=="numbers")
 	{
+
+		if(op_pressed=="="){input.innerText="";}
+
 		if(next_n)
 		{
 			input.innerText="";
@@ -64,9 +68,11 @@ buttons.addEventListener("click", function(event)
 			if(input.innerText=="0")
 			{
 				input.innerText=event.target.value;
+				n1=parseFloat(input.innerText);
 			}else
 			{
 				input.innerText+=event.target.value;   // NA BALO PERIORISMO STO LENGTH
+				n1=parseFloat(input.innerText);
 			}
 		}
 		
@@ -81,28 +87,35 @@ buttons.addEventListener("click", function(event)
 			next_n=false;
 		}else if(event.target.value=="=" && n2!=undefined)
 		{
+
 			  if(tmp_o!=undefined && tmp_n!=undefined)
 					{
 						n2=operator(tmp_n,n2,op_pressed);
 						input.innerText=operator(n1,n2,tmp_o).toString();
-						tmp_o=undefined;
-						tmp_n=undefined;
+						n1=operator(n1,n2,tmp_o);
 					}else
 					{
 						n2=parseFloat(input.innerText);
 						input.innerText=operator(n1,n2,op_pressed).toString();
-						n1=undefined;
-						n2=undefined;
-						next_n=false;
+						n1=operator(n1,n2,op_pressed);
+						
 					}
+						op_pressed=event.target.value;
+						tmp_o=undefined;
+						tmp_n=undefined;
+						
+						n2=undefined;
+						next_n=false
+
 				
 			  }else if(event.target.value==".")
 			    {
 				input.innerText+="."
+				;
 				}else
 				{
 
-					if(op_pressed!=event.target.value)
+					if(op_pressed!=event.target.value && event.target.value=="x" || event.target.value=="/")
 					{
 						tmp_o=op_pressed;
 					}
@@ -113,33 +126,36 @@ buttons.addEventListener("click", function(event)
 						n2=operator(tmp_n,n2,op_pressed);
 						input.innerText=operator(n1,n2,tmp_o).toString();
 						n1=operator(n1,n2,tmp_o);
-						n2=0;
-					
+						n2=undefined;
+						tmp_o=undefined;
+						tmp_n=undefined;
 					}
 					
 					if(n2==undefined)
 					{
-					op_pressed=event.target.value;
+					
 					n1=parseFloat(input.innerText);
 					
 					}else
 					{
 						n2=parseFloat(input.innerText);
-						//input.innerText=operator(n1,n2,op_pressed).toString();
 						
-						if(event.target.value!="x" && event.target.value!="/" )
+						if(event.target.value!="x" && event.target.value!="/" && tmp_o==undefined && tmp_n==undefined)
 						{
 							input.innerText=operator(n1,n2,op_pressed).toString();
 							n1=operator(n1,n2,op_pressed);
-							n2=0;
+							n2=undefined;
+
 						}else
 						{
 							tmp_n=n2;
 							
 						}
-						op_pressed=event.target.value;
+						
 					}
 					next_n=true;
+					op_pressed=event.target.value;
+
 				}					
 
 	}
