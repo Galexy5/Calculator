@@ -8,26 +8,28 @@
 </head>
 <body>
 <div class="calculator">
- <div class="screen"></div>
+ <div class="screen">0</div>
 	<div class="buttons">
 		
-		<button class="numbers" value="0">0</button>
-		<button class="numbers" value="1">1</button>
-		<button class="numbers" value="2">2</button>
-		<button class="numbers" value="3">3</button>
-		<button class="numbers" value="4">4</button>
-		<button class="numbers" value="5">5</button>
-		<button class="numbers" value="6">6</button>
+		
 		<button class="numbers" value="7">7</button>
 		<button class="numbers" value="8">8</button>
 		<button class="numbers" value="9">9</button>
-		<button class="operators" value="+">+</button>
-		<button class="operators" value="-">-</button>
-		<button class="operators" value="x">x</button>
 		<button class="operators" value="/">/</button>
-		<button class="operators" value="=">=</button>
-		<button class="operators" value="C">C</button>
+		<button class="numbers" value="4">4</button>
+		<button class="numbers" value="5">5</button>
+		<button class="numbers" value="6">6</button>
+		<button class="operators" value="x">x</button>    
+		<button class="numbers" value="1">1</button>	
+		<button class="numbers" value="2">2</button>
+		<button class="numbers" value="3">3</button>	
+		<button class="operators" value="-">-</button>
+		<button class="numbers" value="0">0</button>
 		<button class="operators" value=".">.</button>
+		<button class="operators" value="+">+</button>
+		<button class="operators" value="=">=</button>
+		
+		<button class="operators" value="C">C</button>
 
 	</div>
 
@@ -39,6 +41,7 @@ let input=document.querySelector('.screen');
 let n1,n2;
 let next_n=false;
 let op_pressed;
+let tmp;
 
 const buttons=document.querySelector('.buttons');
 
@@ -52,45 +55,81 @@ buttons.addEventListener("click", function(event)
 		{
 			input.innerText="";
 			input.innerText+=event.target.value; 
+			n2=parseFloat(input.innerText);
 			next_n=false;
 
 		}else
-		{
-			input.innerText+=event.target.value;   // NA BALO PERIORISMO STO LENGTH
-			
+		{	
+			if(input.innerText=="0")
+			{
+				input.innerText=event.target.value;
+			}else
+			{
+				input.innerText+=event.target.value;   // NA BALO PERIORISMO STO LENGTH
+			}
 		}
 		
-		
-
 	}else
 	{
-		
-		if(event.target.value=="=")
+		if(event.target.value=="C")
 		{
-			n2=parseInt(input.innerText);
-			input.innerText=operator(n1,n2,op_pressed).toString();
-			next_n=true;
-		}else
+			input.innerText="0";
+			n1=undefined;
+			n2=undefined;
+			op_pressed=undefined;
+			next_n=false;
+		}else if(event.target.value=="=" && n2!=undefined)
 		{
-			op_pressed=event.target.value;
-			n1=parseInt(input.innerText);
-			next_n=true;
-		}
-		// if(op_pressed==".")
-		// {
+				n2=parseFloat(input.innerText);
+				input.innerText=operator(n1,n2,op_pressed).toString();
+				n1=undefined;
+				n2=undefined;
+				next_n=false;
+			  }else if(event.target.value==".")
+			    {
+				input.innerText+="."
+				}else
+				{
+					// if(event.target.value=="x" && n1!=undefined && n2!=undefined)
+					// {
+					// 	tmp=n1;
 
-		// }
-			
+					// }
+					
+					if(n2==undefined)
+					{
+					op_pressed=event.target.value;
+					n1=parseFloat(input.innerText);
+					
+					}else
+					{
+						n2=parseFloat(input.innerText);
+						input.innerText=operator(n1,n2,op_pressed).toString();
+						n1=operator(n1,n2,op_pressed);
+						n2=0;
+						// if(op_pressed!="x" && op_pressed!="/" )
+						// {
+							
+						// }else
+						// {
+
+						// }
+						op_pressed=event.target.value;
+					}
+					next_n=true;
+				}					
+
 	}
+		
 	
-
+	
 	
 });
 	
 let add=(a,b)=> a+b;
-let sub=(a,b)=> a-b;
-let mul=(a,b)=> a*b;
-let div=(a,b)=>a/b;
+let subtract=(a,b)=> a-b;
+let multiply=(a,b)=> a*b;
+let divide=(a,b)=>a/b;
 
 function operator(a,b,op)
 {
@@ -99,13 +138,13 @@ function operator(a,b,op)
 	    return add(a,b);
 	}else if(op=="-")
 	{
-		return sub(a,b);
+		return subtract(a,b);
 	}else if(op=="x")
 	{
-		return mul(a,b);
+		return multiply(a,b);
 	}else
 	{
-		return div(a,b);
+		return divide(a,b);
 	}
 }
 

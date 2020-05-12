@@ -12,27 +12,34 @@
 }
 
 .screen{
-margin-top: 20px;
+margin-top: 50px;
 margin-left: 50px;
 border-radius: 25px;
 position: relative;
 background-color: #f5f771;
-/*text-align: right;*/
+text-align: right;
+font-size: 26px;
+font-weight: bold;
 width:400px;
 height:60px;
 }
 
-
+.buttons{
+	margin-top: 100px;
+	margin-left: 70px;
+	width:400px;
+	height: 500px;
+}
 
 .buttons button{
 	margin-top: 15px;
 	margin-left: 15px;
 	position: relative;
 	background-color: gray;
-	font-size: 40px;
+	font-size: 50px;
 	color:black;
-	width:50px;
-	height:50px;
+	width:70px;
+	height:70px;
 	
 
 }
