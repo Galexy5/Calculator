@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="calculator">
- <div class="screen">0</div>
+ <div class="screen"><p class="screen-text"></p></div>
 	<div class="buttons">
 		
 		
@@ -36,14 +36,15 @@
 </div>
 <script type="text/javascript">
 
-let input=document.querySelector('.screen');
+let input=document.querySelector('.screen-text');
 
-let eq_pressed=false;
-let dot_pressed=false;
-let del_pressed=false;
-let op_pressed=false;
-let screen=[]
-let number="";
+let eq_pressed=false;  //  When = is pressed
+let dot_pressed=false; // when . is pressed
+let del_pressed=false;	//When del is pressed
+let op_pressed=false;	//when operator is pressed
+let screen=[]		//Keeping the input of the screen in an array, both numbers and operators |  Example: screen=[1,"+",2,"x","3"]   .This will help  order of operatios in findResult function 
+let number="";     //Variale for every number 
+let input_length=0;
 
 const buttons=document.querySelector('.buttons');
 
@@ -57,7 +58,7 @@ buttons.addEventListener("click", function(event)
 	{
 
 
-		if(eq_pressed )						
+		if(eq_pressed )						//After = is pressed if a number is pressed screen is cleared;
 			{
 				input.innerText="";
 				number="";
@@ -80,12 +81,13 @@ buttons.addEventListener("click", function(event)
 	{
 			if(event.target.value=="del" && !eq_pressed && number!="") //delete button
 				{
+					del_pressed=true;
 					input.innerText=input.innerText.slice(0,-1);
 					number=number.slice(0,-1);
 				}else
 				{
 
-			if(event.target.value!="=" && event.target.value!="del" && event.target.value!="C" && event.target.value!="." && !op_pressed)    //DISPLAY ON CALCULTOR AND ADD TO ARRAY NUMBER AND OPERATOR  + - * / 
+		if(event.target.value!="=" && event.target.value!="del" && event.target.value!="C" && event.target.value!="." && !op_pressed)//Display on calculator and add to array number and operator + - * / 
 			{
 				op_pressed=true;
 				dot_pressed=false;
@@ -113,7 +115,7 @@ buttons.addEventListener("click", function(event)
 
 			} 
 
-			if(event.target.value=="." && !dot_pressed)
+			if(event.target.value=="." && !dot_pressed)  //When . is pressed
 			{
 				number+="."
 				input.innerText+="."
@@ -126,7 +128,7 @@ buttons.addEventListener("click", function(event)
 
 			
 
-			if(event.target.value=="=" && !eq_pressed)
+			if(event.target.value=="=" && !eq_pressed && number!="") //When = is pressed
 			{
 				screen.push(parseFloat(number));
 				input.innerText=findResult(screen);
@@ -140,7 +142,7 @@ buttons.addEventListener("click", function(event)
 			}
 
 
-			if(event.target.value=="C")
+			if(event.target.value=="C") // When C is pressed
 			{
 				input.innerText="0"
 				number="";
@@ -170,7 +172,7 @@ function findResult(arr)
 {
 	let res;
 
-for (var i = arr.length-1; i > 0; i--) {
+for (var i = arr.length-1; i > 0; i--) {  //First do the multiply and divide  ....Example: arr=[1,"+",2,"x",2,"+",4]
   if(arr[i]=="x")
   {
     res=arr[i-1]*arr[i+1]; //
@@ -186,7 +188,7 @@ for (var i = arr.length-1; i > 0; i--) {
   }
 }
 
-
+//After this for the arr looks like this [1,"+",4,"+",4]
 
 for (var y=0; y<arr.length; y++) 
 {
@@ -206,7 +208,16 @@ for (var y=0; y<arr.length; y++)
     
 }
 
-return Math.round(res*10)/10;
+//After this for the arr looks like this [9]
+if(res=="Infinity")
+{
+	alert("Cannot divide with 0");
+	return 0;
+}else
+{
+	return Math.round(res*10)/10;
+}
+
 }
 
 </script> 
