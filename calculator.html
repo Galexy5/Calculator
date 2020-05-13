@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="calculator">
- <div class="screen"><p class="screen-text"></p></div>
+ <div class="screen"><p class="screen-text" ></p></div>
 	<div class="buttons">
 		
 		
@@ -28,8 +28,8 @@
 		<button class="operators" value=".">.</button>
 		<button class="operators" value="+">+</button>
 		<button class="operators" value="=">=</button>	
-		<button class="operators" value="C">C</button>
-		<button id="del" class="operators" class value="del">Del</button>
+		<button id="C" class="operators" value="C">C</button>
+		<button id="del" class="operators" value="del">Del</button>
 
 	</div>
 
@@ -38,126 +38,219 @@
 
 let input=document.querySelector('.screen-text');
 
+
 let eq_pressed=false;  //  When = is pressed
 let dot_pressed=false; // when . is pressed
 let del_pressed=false;	//When del is pressed
 let op_pressed=false;	//when operator is pressed
 let screen=[]		//Keeping the input of the screen in an array, both numbers and operators |  Example: screen=[1,"+",2,"x","3"]   .This will help  order of operatios in findResult function 
 let number="";     //Variale for every number 
-let input_length=0;
+
 
 const buttons=document.querySelector('.buttons');
 
 buttons.addEventListener("click", function(event)
 {
 
-	if(event.target.value!=undefined)
+			
+	
+if(event.target.value!=undefined)
+{
+
+	if(input.innerText.length<=14)
 	{
-
-		if(event.target.className=="numbers")  //Number is pressed
-	{
-
-
-		if(eq_pressed )						//After = is pressed if a number is pressed screen is cleared;
+		if(event.target.className=="operators")  // Operator is pressed
 			{
-				input.innerText="";
-				number="";
-				eq_pressed=false;
-				if(!op_pressed)
+			if(event.target.value=="del" && !eq_pressed && number!="") //delete button
 				{
-				screen=[];
-				}
-				
-			}
 
-		if(input.innerText=="0")
-		{
-			input.innerText=event.target.value;  // Display on calculator
-		}else{input.innerText+=event.target.value;}
+					del_pressed=true;
+					input.innerText=input.innerText.slice(0,-1);
+					number=number.slice(0,-1);
+					if(number==""){number="0";}
+				}else
+				{
+
+						if(event.target.value!="=" && event.target.value!="del" && event.target.value!="C" && event.target.value!="." && !op_pressed)//Display on calculator and add to array number and operator + - * / 
+							{
+								op_pressed=true;
+								dot_pressed=false;
+
+
+									if(number!="")
+										{
+
+												if(eq_pressed)
+												{
+													 screen.push(event.target.value);
+													 number="";
+													 eq_pressed=false;
+												}else
+												{
+												 screen.push(parseFloat(number));
+												 screen.push(event.target.value);
+												 input.innerText+=event.target.value;
+												 number="";
+												}
+						 
+										 }else
+												 {
+												 	screen.push(event.target.value);
+												 }
+
+							} 
+
+
+						if(event.target.value=="." && !dot_pressed)  //When . is pressed
+						{
+							number+="."
+							input.innerText+="."
+							dot_pressed=true;
+							eq_pressed=false;
+							op_pressed=false;
+							del_pressed=false;
+						} 
+
+						if(event.target.value=="=" && !eq_pressed && number!="" && screen.length>0) //When = is pressed
+				{
+					screen.push(parseFloat(number));
+					input.innerText=findResult(screen); 
+					screen.splice(1);
+					number="";
+					eq_pressed=true;
+					dot_pressed=false;
+					op_pressed=false;
+					del_pressed=false;
+
+				}
+
+
+				if(event.target.value=="C") // When C is pressed
+				{
+					input.innerText="0"
+					number="0";
+					screen=[];
+					eq_pressed=false;
+					dot_pressed=false;
+					op_pressed=false;
+					del_pressed=false
+				}
+		
+		
+				}
+
+			
+
+	}else //Number is pressed
+	{
+
+
+			if(eq_pressed )						//After = is pressed if a number is pressed screen is cleared;
+				{
+					input.innerText="";
+					number="";
+					eq_pressed=false;
+					if(!op_pressed)
+						{
+							screen=[];
+						}
+					
+				}
+
+			if(input.innerText=="0")
+			{
+				input.innerText=event.target.value;  // Display on calculator
+			}else
+			{
+				input.innerText+=event.target.value;
+			}
 
 		number+=event.target.value;
 		op_pressed=false;
-	}else //Operator or something else pressed
-	{
-			if(event.target.value=="del" && !eq_pressed && number!="") //delete button
+		
+
+ }
+
+}else // If input is full 
+{
+	
+if(event.target.className=="operators" ){
+		if(event.target.value=="C") // When C is pressed
+				{
+					input.innerText="0"
+					number="0";
+					screen=[];
+					eq_pressed=false;
+					dot_pressed=false;
+					op_pressed=false;
+					del_pressed=false
+				}else if(event.target.value=="del" && !eq_pressed && number!="") //delete button
 				{
 					del_pressed=true;
 					input.innerText=input.innerText.slice(0,-1);
 					number=number.slice(0,-1);
-				}else
+					if(number==""){number="0";}
+
+				}else if(event.target.value=="=" && !eq_pressed && number!="" && screen.length>0) //When = is pressed
 				{
+					screen.push(parseFloat(number));
+					input.innerText=findResult(screen); 
+					screen.splice(1);
+					number="";
+					eq_pressed=true;
+					dot_pressed=false;
+					op_pressed=false;
+					del_pressed=false;
 
-		if(event.target.value!="=" && event.target.value!="del" && event.target.value!="C" && event.target.value!="." && !op_pressed)//Display on calculator and add to array number and operator + - * / 
-			{
-				op_pressed=true;
-				dot_pressed=false;
-				if(number!="")
-					{
-
-					if(eq_pressed)
-					{
-						 screen.push(event.target.value);
-						 number="";
-						 eq_pressed=false;
-					}else
-					{
-						screen.push(parseFloat(number));
-					 screen.push(event.target.value);
-					 input.innerText+=event.target.value;
-					 number="";
-					}
-
-				 
-					 }else
-					 {
-					 	screen.push(event.target.value);
-					 }
-
-			} 
-
-			if(event.target.value=="." && !dot_pressed)  //When . is pressed
-			{
-				number+="."
-				input.innerText+="."
-				dot_pressed=true;
-				eq_pressed=false;
-				op_pressed=false;
-				del_pressed=false;
-			} 
-
-
-			
-
-			if(event.target.value=="=" && !eq_pressed && number!="") //When = is pressed
-			{
-				screen.push(parseFloat(number));
-				input.innerText=findResult(screen);
-				screen.splice(1);
-				number="";
-				eq_pressed=true;
-				dot_pressed=false;
-				op_pressed=false;
-				del_pressed=false;
-
-			}
-
-
-			if(event.target.value=="C") // When C is pressed
-			{
-				input.innerText="0"
-				number="";
-				screen=[];
-				eq_pressed=false;
-				dot_pressed=false;
-				op_pressed=false;
-				del_pressed=false
-			}
 				}
 
-	}
-	}
+				if(event.target.value!="=" && event.target.value!="del" && event.target.value!="C" && event.target.value!="." && !op_pressed)//Display on calculator and add to array number and operator + - * / 
+							{
 
-	
+								op_pressed=true;
+								dot_pressed=false;
+
+
+
+									if(number!="")
+										{
+
+												if(eq_pressed)
+												{
+													 screen.push(event.target.value);
+													 number="";
+													 eq_pressed=false;
+												}else
+												{
+												 screen.push(parseFloat(number));
+												 screen.push(event.target.value);
+												 input.innerText+=event.target.value;
+												 number="";
+												 input.innerText="";
+												}
+						 
+										 }else
+												 {
+												 	screen.push(event.target.value);
+												 }
+
+							} 
+
+					if(event.target.value=="." && !dot_pressed)  //When . is pressed
+										{
+											number+="."
+											input.innerText+="."
+											dot_pressed=true;
+											eq_pressed=false;
+											op_pressed=false;
+											del_pressed=false;
+										} 
+
+
+	}
+}
+
+}
 
 	});
 
@@ -223,3 +316,37 @@ if(res=="Infinity")
 </script> 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,7 @@
 .calculator{
   border-radius: 25px; /*Rounded corners*/
   margin:0 auto;
-  background-color: #e0d9d7;
+  background-color: #a0988a;
   top:50%;
   left:50%;
   width: 500px;
@@ -15,13 +15,12 @@
 margin-top: 50px;
 margin-left: 28px;
 border-radius: 25px;
-background-color: #f5f771;
+background-color: #f4e4d1;
 text-align: right;
 font-size: 38px;
 font-weight: bold;
 width:450px;
 height:70px;
-/*overflow: auto;*/
 padding-top: 1px;
 }
 
@@ -29,8 +28,6 @@ padding-top: 1px;
 	margin-top: 10px;
 	margin-right: 5px;
 	position: :relative;
-	/*top:0;
-	right:0;*/
 }
 
 .buttons{
@@ -44,7 +41,7 @@ padding-top: 1px;
 	margin-top: 15px;
 	margin-left: 15px;
 	position: relative;
-	background-color: gray;
+
 	font-size: 50px;
 	color:black;
 	width:85px;
@@ -53,7 +50,21 @@ padding-top: 1px;
 
 }
 
-#del{
+.buttons button:active{
 
+	box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.operators{
+	background-color: #fa951c;
+}
+
+#C{
+	background-color: #f6593d;
+}
+
+#del{
+	background-color: #f6593d;
 	width: 100px;
 }
